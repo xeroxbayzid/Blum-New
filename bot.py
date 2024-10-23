@@ -473,13 +473,15 @@ class BlumTod:
                 task_status = _res.json().get("status")
                 continue
             if validation_type == "KEYWORD" or task_status == "READY_FOR_VERIFY":
+                await countdown(3)
                 verify_url = (
                     f"https://earn-domain.blum.codes/api/v1/tasks/{task_id}/validate"
                 )
-                answer_url = "https://akasakaid.github.io/blum/answer.json"
+                # answer_url = "https://akasakaid.github.io/blum/answer.json"
+                answer_url = "https://raw.githubusercontent.com/boytegar/BlumBOT/d55dcc033e508ee8dc10218f72f7ac369de1039f/verif.json"
                 res_ = await self.http(answer_url, {"User-Agent": "Marin Kitagawa"})
                 answers = res_.json()
-                answer = answers.get(task_id)
+                answer = answers.get(task_id).lower()
                 if not answer:
                     self.log(f"{yellow}answers to quiz tasks are not yet available.")
                     break
@@ -488,10 +490,14 @@ class BlumTod:
                 res = await self.http(verify_url, self.headers, json.dumps(data))
                 message = res.json().get("message")
                 if message:
+                    self.log(message)
                     break
                     return
                 task_status = res.json().get("status")
                 continue
+            else:
+                break
+
 
 
 async def countdown(t):
