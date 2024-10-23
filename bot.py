@@ -214,11 +214,11 @@ class BlumTod:
         return data.json()
 
     async def create_payload(self, game_id, points, dogs):
-        # data = await self.get_data_payload()
-        # payload_server = data.get('payloadServer', [])
-        # filtered_data = [item for item in payload_server if item['status'] == 1]
-        # random_id = random.choice([item['id'] for item in filtered_data])
-        random_id = random.choice(['bmyrrpbvnlaa8', "hpwsqafwqdqr9", "enmobnpmpxkw10"])
+        data = await self.get_data_payload()
+        payload_server = data.get('payloadServer', [])
+        filtered_data = [item for item in payload_server if item['status'] == 1]
+        random_id = random.choice([item['id'] for item in filtered_data])
+        # random_id = random.choice(['bmyrrpbvnlaa8', "hpwsqafwqdqr9", "enmobnpmpxkw10"])
         data = json.dumps({'game_id': game_id,
                             'points': points,
                             'dogs': dogs
@@ -334,26 +334,27 @@ class BlumTod:
         if self.cfg.auto_task:
             task_url = "https://earn-domain.blum.codes/api/v1/tasks"
             res = await self.http(task_url, self.headers)
-            for tasks in res.json():
-                if isinstance(tasks, str):
-                    self.log(f"{yellow}failed get task list !")
-                    break
-                for k in list(tasks.keys()):
-                    if k != "tasks" and k != "subSections":
-                        continue
-                    for t in tasks.get(k):
-                        if isinstance(t, dict):
-                            subtasks = t.get("subTasks")
-                            if subtasks is not None:
-                                for task in subtasks:
-                                    await self.solve(task)
-                                await self.solve(t)
-                                continue
-                        _tasks = t.get("tasks")
-                        if not _tasks:
+            if res:
+                for tasks in res.json():
+                    if isinstance(tasks, str):
+                        self.log(f"{yellow}failed get task list !")
+                        break
+                    for k in list(tasks.keys()):
+                        if k != "tasks" and k != "subSections":
                             continue
-                        for task in _tasks:
-                            await self.solve(task)
+                        for t in tasks.get(k):
+                            if isinstance(t, dict):
+                                subtasks = t.get("subTasks")
+                                if subtasks is not None:
+                                    for task in subtasks:
+                                        await self.solve(task)
+                                    await self.solve(t)
+                                    continue
+                            _tasks = t.get("tasks")
+                            if not _tasks:
+                                continue
+                            for task in _tasks:
+                                await self.solve(task)
         if self.cfg.auto_game:
             play_url = "https://game-domain.blum.codes/api/v2/game/play"
             claim_url = "https://game-domain.blum.codes/api/v2/game/claim"
