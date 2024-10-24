@@ -19,9 +19,6 @@ AUTO CLAIM FOR BLUM / @blum
 - [Viewing Reports](#viewing-reports)
 - [Thank You](#thank-you)
 
-# Updates
-
-- 19.10.2024 The games are available again
 
 
 # Warning

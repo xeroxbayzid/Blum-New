@@ -359,7 +359,7 @@ class BlumTod:
             play_url = "https://game-domain.blum.codes/api/v2/game/play"
             claim_url = "https://game-domain.blum.codes/api/v2/game/claim"
             dogs_url = 'https://game-domain.blum.codes/api/v2/game/eligibility/dogs_drop'
-            game = True
+            game = False
             while game:
                 res = await self.http(balance_url, self.headers)
 
@@ -605,12 +605,13 @@ async def main():
 
     {green}1{white}.{green}) {white}set on/off auto claim ({(green + "active" if config.auto_claim else red + "non-active")})
     {green}2{white}.{green}) {white}set on/off auto solve task ({(green + "active" if config.auto_task else red + "non-active")})
-    {green}3{white}.{green}) {white}set on/off auto play game ({(green + "active" if config.auto_game else red + "non-active")})
+    {green}3{white}.{green}) {white}set on/off auto play game ({(red + "games are not available right now!")})
     {green}4{white}.{green}) {white}set game point {green}({config.low}-{config.high})
     {green}5{white}.{green}) {white}set wait time before start {green}({config.clow}-{config.chigh})
     {green}6{white}.{green}) {white}start bot (multiprocessing)
     {green}7{white}.{green}) {white}start bot (sync mode)
         """
+        #{green}3{white}.{green}) {white}set on/off auto play game ({(green + "active" if config.auto_game else red + "non-active")})
         opt = None
         if args.action:
             opt = args.action
@@ -634,14 +635,14 @@ async def main():
             input(f"{blue}press enter to continue")
             opt = None
             continue
-        if opt == "3":
-            cfg["auto_game"] = False if config.auto_game else True
-            async with aiofiles.open(config_file, "w") as w:
-                await w.write(json.dumps(cfg, indent=4))
-            print(f"{green}success update auto game config !")
-            input(f"{blue}press enter to continue")
-            opt = None
-            continue
+        # if opt == "3":
+        #     cfg["auto_game"] = False if config.auto_game else True
+        #     async with aiofiles.open(config_file, "w") as w:
+        #         await w.write(json.dumps(cfg, indent=4))
+        #     print(f"{green}success update auto game config !")
+        #     input(f"{blue}press enter to continue")
+        #     opt = None
+        #     continue
         if opt == "4":
             low = input(f"{green}input low game point : {white}") or 240
             high = input(f"{green}input high game point : {white}") or 250
