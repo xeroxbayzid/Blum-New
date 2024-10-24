@@ -451,7 +451,7 @@ class BlumTod:
         claim_task_url = f"https://earn-domain.blum.codes/api/v1/tasks/{task_id}/claim"
         while True:
             if task_status == "FINISHED":
-                self.log(f"{yellow}already complete task id {white}{task_id} !")
+                self.log(f"{yellow}already complete task id {white}{task_title} !")
                 return
             if task_status == "READY_FOR_CLAIM" or task_status == "STARTED":
                 _res = await self.http(claim_task_url, self.headers, "")
@@ -460,7 +460,7 @@ class BlumTod:
                     return
                 _status = _res.json().get("status")
                 if _status == "FINISHED":
-                    self.log(f"{green}success complete task id {white}{task_id} !")
+                    self.log(f"{green}success complete task id {white}{task_title} !")
                     return
             if task_status == "NOT_STARTED" and task_type == "PROGRESS_TARGET":
                 return
@@ -481,20 +481,23 @@ class BlumTod:
                 answer_url = "https://raw.githubusercontent.com/boytegar/BlumBOT/d55dcc033e508ee8dc10218f72f7ac369de1039f/verif.json"
                 res_ = await self.http(answer_url, {"User-Agent": "Marin Kitagawa"})
                 answers = res_.json()
-                answer = answers.get(task_id).lower()
+                answer = answers.get(task_id)
                 if not answer:
                     self.log(f"{yellow}answers to quiz tasks are not yet available.")
                     break
                     return
                 data = {"keyword": answer}
                 res = await self.http(verify_url, self.headers, json.dumps(data))
-                message = res.json().get("message")
-                if message:
-                    self.log(message)
+                if res:
+                    message = res.json().get("message")
+                    if message:
+                        self.log(message)
+                        break
+                        return
+                    task_status = res.json().get("status")
+                    continue
+                else:
                     break
-                    return
-                task_status = res.json().get("status")
-                continue
             else:
                 break
 
