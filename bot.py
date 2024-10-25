@@ -556,10 +556,10 @@ async def get_data(data_file, proxy_file):
 
 async def main():
     banner = f"""
-{magenta} _____ __    _____ _____  {white}BLUM AUTO TASK AND PLAY GAME BOT {green}BLUM
-{magenta}| __  |  |  |  |  |     | {green}Author : {white}D4rkCipherX
-{magenta}| __ -|  |__|  |  | | | | {white}YouTube : {green}https://youtube.com/@d4rkcipherx
-{magenta}|_____|_____|_____|_|_|_| {green}Note : {white}MUST SUBSCRIBE MY YOUTUBE CHANNEL
+{magenta} _____ __    _____ _____  {green}BLUM AUTO TASK AND PLAY GAME BOT BY @XEROX_BAYZID
+{magenta}| __  |  |  |  |  |     | {green}Author : {white}Md Bayzid Bostami
+{magenta}| __ -|  |__|  |  | | | | {green}Telegram : {white}@xerox_bayzid
+{magenta}|_____|_____|_____|_|_|_| {green}Instagram : {white}@xerox_bayzid
         """
     arg = argparse.ArgumentParser()
     arg.add_argument(
