@@ -228,10 +228,13 @@ class BlumTod:
         resp = requests.post(PAYLOAD_SERVER_URL, json=payload_data)
 
         if resp is not None:
-            data = resp.json()
-            if "payload" in data:
-                return json.dumps({"payload": data["payload"]})
-            return None
+            try:
+                data = resp.json()
+                if "payload" in data:
+                    return json.dumps({"payload": data["payload"]})
+            except Exception as e:
+                self.log(e)
+                return None
 
     async def start(self):
         rtime = random.randint(self.cfg.clow, self.cfg.chigh)
