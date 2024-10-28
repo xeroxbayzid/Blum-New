@@ -364,21 +364,23 @@ class BlumTod:
             claim_url = "https://game-domain.blum.codes/api/v2/game/claim"
             dogs_url = 'https://game-domain.blum.codes/api/v2/game/eligibility/dogs_drop'
 
+            try:
+                random_uuid = str(uuid.uuid4())
+                point = random.randint(self.cfg.low, self.cfg.high)
+                data = await get_payload(gameId=random_uuid, points=point)
 
-            random_uuid = str(uuid.uuid4())
-            point = random.randint(self.cfg.low, self.cfg.high)
-            data = await get_payload(gameId=random_uuid, points=point)
+                if "payload" in data:
+                    self.log(f"{green}Games available right now!")
+                    game = True
 
-
-            if "payload" in data:
-                self.log(f"{green}Games available right now!")
-                game = True
-
-            else:
+                else:
+                    self.log(f"{red}Failed start games - {e}")
+                    self.log(f"{red}Install node.js!")
+                    game = False
+            except Exception as e:
                 self.log(f"{red}Failed start games - {e}")
                 self.log(f"{red}Install node.js!")
                 game = False
-
 
 
             #проверяем - доступен ли сервер декодирования
