@@ -3,6 +3,7 @@ import re
 import sys
 import json
 import anyio
+from payload import get_payload
 import httpx
 import random
 import uuid
@@ -363,31 +364,48 @@ class BlumTod:
             claim_url = "https://game-domain.blum.codes/api/v2/game/claim"
             dogs_url = 'https://game-domain.blum.codes/api/v2/game/eligibility/dogs_drop'
 
-            #проверяем - доступен ли сервер декодирования
-            try:
 
-                PAYLOAD_SERVER_URL = "https://server2.ggtog.live/api/game"
-                random_uuid = str(uuid.uuid4())
-                points = random.randint(self.cfg.low, self.cfg.high)
-                payload_data = {'gameId': random_uuid,
-                                'points': str(points),
-                                "dogs": 0}
-                resp = requests.post(PAYLOAD_SERVER_URL, json=payload_data)
-                data = resp.json()
+            random_uuid = str(uuid.uuid4())
+            point = random.randint(self.cfg.low, self.cfg.high)
+            data = await get_payload(gameId=random_uuid, points=point)
 
-                if "payload" in data:
-                    self.log(f"{green}Games available right now!")
-                    game = True
 
-                else:
-                    self.log(f"{red}Failed start games - {e}")
-                    self.log(f"{red}Games are not available right now!")
-                    game = False
+            if "payload" in data:
+                self.log(f"{green}Games available right now!")
+                game = True
 
-            except Exception as e:
+            else:
                 self.log(f"{red}Failed start games - {e}")
-                self.log(f"{red}Games are not available right now!")
+                self.log(f"{red}Install node.js!")
                 game = False
+
+
+
+            #проверяем - доступен ли сервер декодирования
+            # try:
+            #
+            #     PAYLOAD_SERVER_URL = "https://server2.ggtog.live/api/game"
+            #     random_uuid = str(uuid.uuid4())
+            #     points = random.randint(self.cfg.low, self.cfg.high)
+            #     payload_data = {'gameId': random_uuid,
+            #                     'points': str(points),
+            #                     "dogs": 0}
+            #     resp = requests.post(PAYLOAD_SERVER_URL, json=payload_data)
+            #     data = resp.json()
+            #
+            #     if "payload" in data:
+            #         self.log(f"{green}Games available right now!")
+            #         game = True
+            #
+            #     else:
+            #         self.log(f"{red}Failed start games - {e}")
+            #         self.log(f"{red}Games are not available right now!")
+            #         game = False
+            #
+            # except Exception as e:
+            #     self.log(f"{red}Failed start games - {e}")
+            #     self.log(f"{red}Games are not available right now!")
+            #     game = False
 
 
             while game:
@@ -443,11 +461,11 @@ class BlumTod:
                         if eligible:
                             dogs = random.randint(25, 30) * 5
                             self.log(f'dogs = {dogs}')
-                            payload = await self.create_payload(game_id=game_id, points=point,
-                                                             dogs=dogs)
+                            # payload = await self.create_payload(game_id=game_id, points=point,dogs=dogs)
+                            payload = await get_payload(gameId=game_id, points=point)
                         else:
-                            payload = await self.create_payload(game_id=game_id, points=point,
-                                                             dogs=0)
+                            # payload = await self.create_payload(game_id=game_id, points=point,dogs=0)
+                            payload = await get_payload(gameId=game_id, points=point)
 
                         await countdown(random.randint(31, 40))
 
