@@ -578,17 +578,12 @@ async def get_data(data_file, proxy_file):
 
 
 async def main():
-    init()
-    banner = f"""{Fore.GREEN}
- ██████  ██    ██   ██████  ██    ██  ███    ███  ██████   ███████  ██████  
-██       ██    ██  ██       ██    ██  ████  ████  ██   ██  ██       ██   ██ 
-██       ██    ██  ██       ██    ██  ██ ████ ██  ██████   █████    ██████  
-██       ██    ██  ██       ██    ██  ██  ██  ██  ██   ██  ██       ██   ██ 
- ██████   ██████    ██████   ██████   ██      ██  ██████   ███████  ██   ██     
-    Auto Claim Bot For Blum - Cucumber Automation
-    Github  : https://github.com/cucumber-pickle
-    Telegram: https://t.me/cucumber_script
-        {Style.RESET_ALL}"""
+    banner = f"""
+{magenta} _____ __    _____ _____  {white}BLUM AUTO TASK AND PLAY GAME BOT {green}BLUM
+{magenta}| __  |  |  |  |  |     | {green}Author : {white}D4rkCipherX
+{magenta}| __ -|  |__|  |  | | | | {white}YouTube : {green}https://youtube.com/@d4rkcipherx
+{magenta}|_____|_____|_____|_|_|_| {green}Note : {white}MUST SUBSCRIBE MY YOUTUBE CHANNEL
+        """
     arg = argparse.ArgumentParser()
     arg.add_argument(
         "--data",
