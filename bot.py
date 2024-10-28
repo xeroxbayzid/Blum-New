@@ -320,7 +320,7 @@ class BlumTod:
                 end_farming = farming.get("endTime")
                 if timestamp > (end_farming / 1000):
                     res_ = await self.http(farming_claim_url, self.headers, "")
-                    if res_.status_code != 200:
+                    if res_ and res_.status_code != 200:
                         self.log(f"{red}failed claim farming !")
                     else:
                         self.log(f"{green}success claim farming !")
